@@ -175,10 +175,18 @@
                                 <img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.nowWeather }}.png" alt="{{ vo.sun_stuffs.nowWeather }}날씨" class="card-image" style="width:150px; height:150px;">
                             </div>
                             <p class="card-text text-center">
-                                <img src="../static/assets/img/weather/icon/temperature.png" style="width:30px; height:30px;" class="weather-icon">  현재 기온 : {{ vo.sun_stuffs.nowTemp }}℃<br>
-                                <img src="../static/assets/img/weather/icon/sunrise_color.png" style="width:30px; height:30px;" class="weather-icon">  일출 시간 : {{ vo.sun_stuffs.sunriseTime }}<br>
-                                <img src="../static/assets/img/weather/icon/sunset_color.png" style="width:30px; height:30px;" class="weather-icon">  일몰 시간 : {{ vo.sun_stuffs.sunsetTime }}<br>
+                                {% if vo.sun_stuffs.nowTemp == '-' %}
+                                    <div class="card">
+                                      <div class="card-body text-center">
+                                        현재 날씨 정보를 제공하지 않는 지역입니다.
+                                      </div>
+                                    </div>
 
+                                {% else %}
+                                    <img src="../static/assets/img/weather/icon/temperature.png" style="width: 30px; height: 30px;" class="weather-icon" data-bs-toggle="tooltip" data-bs-html="true" title="{{ vo.dto.name }}">  현재 기온 : {{ vo.sun_stuffs.nowTemp }}℃<br>
+                                    <img src="../static/assets/img/weather/icon/sunrise_color.png" style="width: 30px; height: 30px;" class="weather-icon">  일출 시간 : {{ vo.sun_stuffs.sunriseTime }}<br>
+                                    <img src="../static/assets/img/weather/icon/sunset_color.png" style="width: 30px; height: 30px;" class="weather-icon">  일몰 시간 : {{ vo.sun_stuffs.sunsetTime }}<br>
+                                {% endif %}
                             </p>
 
                             <div>
@@ -196,13 +204,22 @@
                                     <tbody>
                                         <tr>
                                             <th>날씨</th>
-                                            <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.tw.wcond }}.png" alt="" style="width:30px; height:30px;" class="weather-icon"></td>
-                                            <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.tommorow_weather.wcond }}.png" alt="" style="width:30px; height:30px;" class="weather-icon"></td>
-                                            <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.after_tommorow_weather.wcond }}.png" alt="" style="width:30px; height:30px;" class="weather-icon"></td>
+                                            <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.nowWeather }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon" style="width: 30px; height: 30px;"></td>
+                                            {% if vo.sun_stuffs.nowTemp == '-' %}
+                                                <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.nowWeather }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon" style="width: 30px; height: 30px;"></td>
+                                                <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.nowWeather }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon" style="width: 30px; height: 30px;"></td>
+                                            {% else %}
+                                                <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.tommorow_weather.wcond }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon" style="width: 30px; height: 30px;"></td>
+                                                <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.after_tommorow_weather.wcond }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon"></td>
+                                            {% endif %}
                                         </tr>
                                         <tr>
                                             <th>기온</th>
-                                            <td>{{ vo.sun_stuffs.nowTemp }}℃</td>
+                                            {% if vo.sun_stuffs.nowTemp == '-' %}
+                                                <td>{{ vo.sun_stuffs.tw.temp }}℃</td>
+                                            {% else %}
+                                                <td>{{ vo.sun_stuffs.nowTemp }}℃</td>
+                                            {% endif %}
                                             <td>{{ vo.sun_stuffs.tommorow_weather.temp }}℃</td>
                                             <td>{{ vo.sun_stuffs.after_tommorow_weather.temp }}℃</td>
                                         </tr>

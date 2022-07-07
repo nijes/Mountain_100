@@ -44,7 +44,6 @@ sheet.insert_rows(1, 1)  # 제일 처음에 빈 1행 추가
 wb1.save(filename)
 
 
-
 # 기차역 위경도 엑셀파일 만들기
 
 terminal = pd.read_csv('source/terminal.csv', encoding='utf-8') #원본파일 https://www.bigdata-forest.kr/product/PTP002101
@@ -111,35 +110,7 @@ for i in range(len(terminal)):
         sheet.cell(k, 4).value = geocode_result[0]['geometry']['location']['lat']
         sheet.cell(k, 5).value = geocode_result[0]['geometry']['location']['lng']
 
-sheet.insert_rows(1, 1)  # 제일 처음에 빈 1행 추가
-# no, st_nm, addr, lot, lat
+sheet.insert_rows(1, 1)
+#no, st_nm, addr, lot, lat
 
 wb2.save(filename)
-
-
-#버스터미널 위경도 엑셀파일 만들기
-
-bus = pd.read_csv('source/bus.csv', encoding='utf-8')
-
-filename = 'source/bus_station.xlsx'
-wb3 = openpyxl.Workbook()
-sheet = wb3.active
-
-j = 0
-
-for i in range(len(bus)):
-    j += 1
-    sheet.cell(j, 1).value = j
-    sheet.cell(j, 2).value = bus['tm_nm'][i]
-    sheet.cell(j, 3).value = str(bus['addr'][i])
-    try :
-        geocode_result = gmaps.geocode(bus['addr'][i])
-        sheet.cell(j, 4). value = geocode_result[0]['geometry']['location']['lat']
-        sheet.cell(j, 5). value = geocode_result[0]['geometry']['location']['lng']
-    except:
-        continue
-
-sheet.insert_rows(1, 1)  # 제일 처음에 빈 1행 추가
-# no, tm_nm, addr, lat, lot
-
-wb3.save(filename)
