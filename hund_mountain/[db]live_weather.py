@@ -61,8 +61,10 @@ cursor.execute('CREATE TABLE live_weather (ID INT PRIMARY KEY,num INT , name TEX
 # columns = ['id', '이름', '시간', '강수 확률', '기온', '습도', '풍속', '불쾌지수']
 
 sql = 'insert into live_weather (ID, num, name, day, rainp, temp, hum, wspd, di) values(%s,%s, %s, %s, %s, %s, %s, %s, %s)'
+
 l=len(hum)
-for i in range():
+
+for i in range(l):
     cursor.execute(sql,(i, num[i],name[i],day[i],rainp[i],temp[i],hum[i],wspd[i],di[i]))
 
 conn.commit()

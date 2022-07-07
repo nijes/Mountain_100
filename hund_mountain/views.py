@@ -112,11 +112,11 @@ def tommorow_weather(id):
         others = document['others']
         weather_info = document['hr3List']
         tommorow_weather = dict()
-        tommorow_weather['wcond'] = weather_info[-9]['wcond']
-        tommorow_weather['temp'] = weather_info[-9]['temp']
-        tommorow_weather['humi'] = weather_info[-9]['humi']
-        tommorow_weather['wspd'] = weather_info[-9]['wspd']
-        tommorow_weather['rainp'] = weather_info[-9]['rainp']
+        tommorow_weather['wcond'] = weather_info[-14]['wcond']
+        tommorow_weather['temp'] = weather_info[-14]['temp']
+        tommorow_weather['humi'] = weather_info[-14]['humi']
+        tommorow_weather['wspd'] = weather_info[-14]['wspd']
+        tommorow_weather['rainp'] = weather_info[-14]['rainp']
         return tommorow_weather
     except:
         return ''
@@ -129,11 +129,11 @@ def after_tommorow_weather(id):
         others = document['others']
         weather_info = document['hr3List']
         after_tommorow_weather = dict()
-        after_tommorow_weather['wcond'] = weather_info[-1]['wcond']
-        after_tommorow_weather['temp'] = weather_info[-1]['temp']
-        after_tommorow_weather['humi'] = weather_info[-1]['humi']
-        after_tommorow_weather['wspd'] = weather_info[-1]['wspd']
-        after_tommorow_weather['rainp'] = weather_info[-1]['rainp']
+        after_tommorow_weather['wcond'] = weather_info[-6]['wcond']
+        after_tommorow_weather['temp'] = weather_info[-6]['temp']
+        after_tommorow_weather['humi'] = weather_info[-6]['humi']
+        after_tommorow_weather['wspd'] = weather_info[-6]['wspd']
+        after_tommorow_weather['rainp'] = weather_info[-6]['rainp']
         return after_tommorow_weather
     except:
         return ''
