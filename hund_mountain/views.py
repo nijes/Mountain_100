@@ -8,6 +8,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime, timedelta
+from django.http import JsonResponse
 
 custom_header = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'}
 
@@ -23,11 +24,11 @@ def zoom_1(request, areacode):
 
 
 
-def zoom_2(request, id):
+def zoom_2(request):
+    id =10
     vo = dict()
     dto = Mountain1.objects.get(id=id)
     vo['dto'] = dto
-
     sun_stuffs = {
         'nowWeather': nowWeather(id),
         'nowTemp': nowTemp(id),
@@ -40,7 +41,44 @@ def zoom_2(request, id):
 
     vo['sun_stuffs'] = sun_stuffs
 
-    return render(request, 'mt_map_zoom_2.html', {'vo': vo})
+
+    mountain = Mountain1.objects.all()
+
+    return render(request, 'mt_map_zoom_2.html', {'vo': vo, 'mountain': mountain})
+
+
+def nifos(request, id):
+
+    url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
+    req = requests.get(url, headers=custom_header).text
+    document = json.loads(req)
+
+    nowWeather = int(document['others']['iconCode'])
+    nowTemp = document['famousMTSDTO']['forestAWS10Min']['tm2m']
+    sunriseTime = document['others']['sunriseTime']
+    sunsetTime = document['others']['sunsetTime']
+    w_info = document['hr3List'][0]
+    today_weather = {'wcond': w_info['wcond'], 'temp': w_info['temp'], 'humi': w_info['humi'], 'wspd': w_info['wspd'], 'rainp': w_info['rainp']}
+    w_info = document['hr3List'][-14]
+    tommorow_weather = {'wcond': w_info['wcond'], 'temp': w_info['temp'], 'humi': w_info['humi'], 'wspd': w_info['wspd'], 'rainp': w_info['rainp']}
+    w_info = document['hr3List'][-6]
+    after_tommorow_weather =  {'wcond': w_info['wcond'], 'temp': w_info['temp'], 'humi': w_info['humi'], 'wspd': w_info['wspd'], 'rainp': w_info['rainp']}
+
+    mtw = {
+        'nowWeather': nowWeather,
+        'nowTemp': nowTemp,
+        'sunriseTime': sunriseTime,
+        'sunsetTime': sunsetTime,
+        'today_weather': today_weather,
+        'tommorow_weather': tommorow_weather,
+        'after_tommorow_weather': after_tommorow_weather
+    }
+
+
+    return JsonResponse(mtw)
+
+
+
 
 
 def sunriseTime(id):
@@ -144,66 +182,6 @@ def details(request, id):
         'df': df(id)
     }
     return render(request, 'mt_map_zoom_2.html', {'weather_detail': weather_detail})
-
-
-def df(id):
-    url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-    req = requests.get(url, headers=custom_header).text
-    document = json.loads(req)
-    others = document['others']
-    weather_info = document['hr3List']
-    df = pd.DataFrame(columns=['시간', '날씨', '강우 확률', '기온'])
-    for i in range(0, len(weather_info), 2):
-        tmeF = weather_info[i]['tmEf'].replace('2022', '')
-        wcond = weather_info[i]['wcond']
-        rainp = weather_info[i]['rainp']
-        temp = weather_info[i]['temp']
-        df = df.append(pd.DataFrame([[tmeF, wcond, rainp, temp]], columns=['시간', '날씨', '강우 확률', '기온']))
-    print(df)
-
-
-def time(id):
-    url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-    req = requests.get(url, headers=custom_header).text
-    document = json.loads(req)
-    others = document['others']
-    weather_info = document['hr3List']
-    for i in range(0, len(weather_info), 2):
-        time = weather_info[i]['tmEf'].replace('2022', '')
-        return time
-
-
-def wcond_details(id):
-    url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-    req = requests.get(url, headers=custom_header).text
-    document = json.loads(req)
-    others = document['others']
-    weather_info = document['hr3List']
-    for i in range(0, len(weather_info), 2):
-        wcond_details = weather_info[i]['wcond']
-        return wcond_details
-
-
-def rainp_details(id):
-    url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-    req = requests.get(url, headers=custom_header).text
-    document = json.loads(req)
-    others = document['others']
-    weather_info = document['hr3List']
-    for i in range(0, len(weather_info), 2):
-        rainp_details = weather_info[i]['rainp']
-        return rainp_details
-
-
-def temp_details(id):
-    url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-    req = requests.get(url, headers=custom_header).text
-    document = json.loads(req)
-    others = document['others']
-    weather_info = document['hr3List']
-    for i in range(0, len(weather_info), 2):
-        temp_details = weather_info[i]['temp']
-        return temp_details
 
 
 

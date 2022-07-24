@@ -11292,3 +11292,8 @@ textarea.form-control-lg {
   background-position: center;
   background-size: cover;
 }
+
+.weather-icon {
+    width: 30px;
+    height: 30px;
+}
