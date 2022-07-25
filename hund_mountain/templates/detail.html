@@ -10,9 +10,7 @@
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'css/detail_styles.css' %}" rel="stylesheet" />
-        <!-- Core theme JS-->
-        <script src="{% static 'js/detail_scripts.js' %}"></script>
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
 
     <body>
@@ -24,7 +22,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/zoom_1/1">Map</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/map/1">Map</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/list/">Information</a></li>
                         <li class="nav-item"><a class="nav-link" href="/recommend/">Recommendation</a></li>
                     </ul>
@@ -49,7 +47,7 @@
 
                         <!-- Preview image figure-->
                         <figure class="mb-4 container">
-                            <img class="img-fluid rounded" style="width: 100%; height: 500px; padding: 0 4rem 0 4rem; object-fit: cover;" src="../static/assets/mt_img/mt_{{ mountain1.id }}.jpg" alt="..." />
+                            <img class="img-fluid rounded" style="width: 100%; height: 500px; padding: 0 4rem 0 4rem; object-fit: cover;" src="../static/assets/mt_img/mt_{{ mountain1.id }}.jpg" alt="..."<img class="img-fluid rounded" style="width: 100%; height: 500px; padding: 0 4rem 0 4rem; object-fit: cover;" src="../static/assets/mt_img/mt_{{ mountain1.id }}.jpg" alt="..."<img class="img-fluid rounded" style="width: 100%; height: 500px; padding: 0 4rem 0 4rem; object-fit: cover;" src="../static/assets/mt_img/mt_{{ mountain1.id }}.jpg" alt="..." />
                         </figure>
 
                         <!-- Post content-->
@@ -89,6 +87,10 @@
                         </table>
                     </article>
                 </div>
+
+
+                <!-- comment section-->
+
 
 
                 <!-- Side widgets-->
@@ -172,21 +174,19 @@
                                 <h5 class="card-title fw-bold">현 재 날 씨</h5>
                             </div>
                             <div class="text-center">
-                                <img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.nowWeather }}.png" alt="{{ vo.sun_stuffs.nowWeather }}날씨" class="card-image" style="width:150px; height:150px;">
+                                <img id="nowWeather_img" alt="" class="card-image" style="width:150px; height:150px;">
                             </div>
-                            <p class="card-text text-center">
-                                {% if vo.sun_stuffs.nowTemp == '-' %}
-                                    <div class="card">
-                                      <div class="card-body text-center">
-                                        현재 날씨 정보를 제공하지 않는 지역입니다.
-                                      </div>
-                                    </div>
-
-                                {% else %}
-                                    <img src="../static/assets/img/weather/icon/temperature.png" style="width: 30px; height: 30px;" class="weather-icon" data-bs-toggle="tooltip" data-bs-html="true" title="{{ vo.dto.name }}">  현재 기온 : {{ vo.sun_stuffs.nowTemp }}℃<br>
-                                    <img src="../static/assets/img/weather/icon/sunrise_color.png" style="width: 30px; height: 30px;" class="weather-icon">  일출 시간 : {{ vo.sun_stuffs.sunriseTime }}<br>
-                                    <img src="../static/assets/img/weather/icon/sunset_color.png" style="width: 30px; height: 30px;" class="weather-icon">  일몰 시간 : {{ vo.sun_stuffs.sunsetTime }}<br>
-                                {% endif %}
+                            <div id="error">
+                                <div class="card">
+                                  <div class="card-body text-center">
+                                    현재 날씨 정보를 제공하지 않는 지역입니다.
+                                  </div>
+                                </div>
+                            </div>
+                            <p class="card-text text-center" id="card_text_main">
+                                <img src="../static/assets/img/weather/icon/temperature.png" class="weather-icon"><span id="nowTemp"></span><br>
+                                <img src="../static/assets/img/weather/icon/sunrise_color.png" class="weather-icon"><span id="sunrise"></span><br>
+                                <img src="../static/assets/img/weather/icon/sunset_color.png" class="weather-icon"><span id="sunset"></span><br>
                             </p>
 
                             <div>
@@ -204,53 +204,41 @@
                                     <tbody>
                                         <tr>
                                             <th>날씨</th>
-                                            <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.nowWeather }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon" style="width: 30px; height: 30px;"></td>
-                                            {% if vo.sun_stuffs.nowTemp == '-' %}
-                                                <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.nowWeather }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon" style="width: 30px; height: 30px;"></td>
-                                                <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.nowWeather }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon" style="width: 30px; height: 30px;"></td>
-                                            {% else %}
-                                                <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.tommorow_weather.wcond }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon" style="width: 30px; height: 30px;"></td>
-                                                <td><img src="../static/assets/img/weather/icon/{{ vo.sun_stuffs.after_tommorow_weather.wcond }}.png" style="width: 30px; height: 30px;" alt="" class="weather-icon"></td>
-                                            {% endif %}
+                                            <td><img id="nowWeather_img_2" alt="" style="width:30px; height:30px;" class="weather-icon"></td>
+                                            <td><img id="tommorow_weather_img" alt="" style="width:30px; height:30px;" class="weather-icon"></td>
+                                            <td><img id="after_tommorow_weather_img" alt="" style="width:30px; height:30px;" class="weather-icon"></td>
                                         </tr>
                                         <tr>
                                             <th>기온</th>
-                                            {% if vo.sun_stuffs.nowTemp == '-' %}
-                                                <td>{{ vo.sun_stuffs.tw.temp }}℃</td>
-                                            {% else %}
-                                                <td>{{ vo.sun_stuffs.nowTemp }}℃</td>
-                                            {% endif %}
-                                            <td>{{ vo.sun_stuffs.tommorow_weather.temp }}℃</td>
-                                            <td>{{ vo.sun_stuffs.after_tommorow_weather.temp }}℃</td>
+                                            <td id="tw_temp"></td>
+                                            <td id="tm_temp"></td>
+                                            <td id="atm_temp"></td>
                                         </tr>
                                         <tr>
                                             <th>습도</th>
-                                            <td>{{ vo.sun_stuffs.tw.humi }}%</td>
-                                            <td>{{ vo.sun_stuffs.tommorow_weather.humi }}%</td>
-                                            <td>{{ vo.sun_stuffs.after_tommorow_weather.humi }}%</td>
+                                            <td id="tw_humi"></td>
+                                            <td id="tm_humi"></td>
+                                            <td id="atm_humi"></td>
                                         </tr>
                                         <tr>
                                             <th>풍속</th>
-                                            <td>{{ vo.sun_stuffs.tw.wspd }}m/s</td>
-                                            <td>{{ vo.sun_stuffs.tommorow_weather.wspd }}m/s</td>
-                                            <td>{{ vo.sun_stuffs.after_tommorow_weather.wspd }}m/s</td>
+                                            <td id="tw_wspd"></td>
+                                            <td id="tm_wspd"></td>
+                                            <td id="atm_wspd"></td>
                                         </tr>
                                         <tr>
                                             <th>강우확률</th>
-                                            <td>{{ vo.sun_stuffs.tw.rainp }}%</td>
-                                            <td>{{ vo.sun_stuffs.tommorow_weather.rainp }}%</td>
-                                            <td>{{ vo.sun_stuffs.after_tommorow_weather.rainp }}%</td>
+                                            <td id="tw_rainp"></td>
+                                            <td id="tm_rainp"></td>
+                                            <td id="atm_rainp"></td>
                                         </tr>
-
-
                                     </tbody>
-
-
                                 </table>
                             </div>
                            </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
@@ -259,7 +247,76 @@
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; MultiCampus DataScience/Engineering 15,16 Team_Matrix</p></div>
         </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+    function unescapeHtml(str){
+        if(str == null){return "";}else{
+        return str
+            .replace('&lt;', '<')
+            .replace('&gt;', '>')
+            .replace('&nbsp;', ' ')
+        }
+    }
+
+    window.onload=function (){
+
+        var overview = document.getElementById("overview_con");
+        var overview_text = overview.textContent;
+        overview.textContent = unescapeHtml(overview_text);
+
+
+        var details = document.getElementById("details_con");
+        var details_text = details.textContent;
+        details.textContent = unescapeHtml(details_text);
+
+
+        $.ajax({
+            url: "/nifos/{{ id }}",
+            dataType: 'json',
+            success: function(msg){
+                $('#card_text_main').children().css('display', 'block-inline');
+                $('#error').children().css('display', 'none');
+
+                let nowWeather = msg.nowWeather
+                let nowTemp = msg.nowTemp
+                let sunriseTime = msg.sunriseTime
+                let sunsetTime = msg.sunsetTime
+                $('#nowWeather_img').attr('src', `../static/assets/img/weather/icon/${nowWeather}.png`);
+                $('#nowTemp').text(`현재 기온 : ${nowTemp}℃`);
+                $('#sunrise').text(`일출시간 : ${sunriseTime}`);
+                $('#sunset').text('일몰시간 : ' + sunsetTime);
+
+                let today_weather = msg.today_weather
+                let tommorow_weather = msg.tommorow_weather
+                let after_tommorow_weather = msg.after_tommorow_weather
+                $('#nowWeather_img_2').attr('src', `../static/assets/img/weather/icon/${today_weather['wcond']}.png`);
+                $('#tommorow_weather_img').attr('src', `../static/assets/img/weather/icon/${tommorow_weather['wcond']}.png`);
+                $('#after_tommorow_weather_img').attr('src', `../static/assets/img/weather/icon/${after_tommorow_weather['wcond']}.png`);
+                $('#tw_temp').text(today_weather['temp']+'℃');
+                $('#tm_temp').text(tommorow_weather['temp']+'℃');
+                $('#atm_temp').text(after_tommorow_weather['temp']+'℃');
+                $('#tw_humi').text(today_weather['humi']+'%');
+                $('#tm_humi').text(tommorow_weather['humi']+'%');
+                $('#atm_humi').text(after_tommorow_weather['humi']+'%');
+                $('#tw_wspd').text(today_weather['wspd']+'m/s');
+                $('#tm_wspd').text(tommorow_weather['wspd']+'m/s');
+                $('#atm_wspd').text(after_tommorow_weather['wspd']+'m/s');
+                $('#tw_rainp').text(today_weather['rainp']+'%');
+                $('#tm_rainp').text(tommorow_weather['rainp']+'%');
+                $('#atm_rainp').text(after_tommorow_weather['rainp']+'%');
+            },
+            error: function(){
+                $('#nowWeather_img, #nowWeather_img_2, #tommorow_weather_img, #after_tommorow_weather_img').attr('src', `../static/assets/img/weather/icon/-.png`);
+                $('#card_text_main').children().css('display', 'none');
+                $('#error').children().css('display', 'block');
+                $('#tw_temp, #tm_temp, #atm_temp, #tw_humi, #tm_humi, #atm_humi, #tw_humi, #tm_humi, #atm_humi, #tw_wspd, #tm_wspd, #atm_wspd, #tw_rainp, #tm_rainp, #atm_rainp').text('');
+            }
+        });
+
+    }
+</script>
 </html>

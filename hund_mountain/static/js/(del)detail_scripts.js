@@ -19,4 +19,5 @@ window.onload=function(){
     var details = document.getElementById("details_con");
     var details_text = details.textContent
     details.textContent = unescapeHtml(details_text)
+
 }

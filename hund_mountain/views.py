@@ -18,33 +18,10 @@ def index(request):
     return render(request, 'index.html')
 
 
-def zoom_1(request, areacode):
+def map(request, areacode):
     area = Coordinate.objects.get(areacode=areacode)
-    return render(request, 'mt_map_zoom_1.html', {'area': area})
-
-
-
-def zoom_2(request):
-    id =10
-    vo = dict()
-    dto = Mountain1.objects.get(id=id)
-    vo['dto'] = dto
-    sun_stuffs = {
-        'nowWeather': nowWeather(id),
-        'nowTemp': nowTemp(id),
-        'sunriseTime': sunriseTime(id),
-        'sunsetTime': sunsetTime(id),
-        'tw': today_weather(id),
-        'tommorow_weather': tommorow_weather(id),
-        'after_tommorow_weather': after_tommorow_weather(id)
-    }
-
-    vo['sun_stuffs'] = sun_stuffs
-
-
     mountain = Mountain1.objects.all()
-
-    return render(request, 'mt_map_zoom_2.html', {'vo': vo, 'mountain': mountain})
+    return render(request, 'map.html', {'area': area, 'mountain': mountain})
 
 
 def nifos(request, id):
@@ -74,114 +51,7 @@ def nifos(request, id):
         'after_tommorow_weather': after_tommorow_weather
     }
 
-
     return JsonResponse(mtw)
-
-
-
-
-
-def sunriseTime(id):
-    try:
-        url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-        req = requests.get(url, headers=custom_header).text
-        document = json.loads(req)
-        others = document['others']
-        sunriseTime = others['sunriseTime']
-        return sunriseTime
-    except:
-        return '-'
-
-def sunsetTime(id):
-    try:
-        url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-        req = requests.get(url, headers=custom_header).text
-        document = json.loads(req)
-        others = document['others']
-        sunsetTime = others['sunsetTime']
-        return sunsetTime
-    except:
-        return '-'
-
-def nowTemp(id):
-    try:
-        url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-        req = requests.get(url, headers=custom_header).text
-        document = json.loads(req)
-        weather = document['famousMTSDTO']['forestAWS10Min']
-        nowTemp = weather['tm2m']
-        return nowTemp
-    except:
-        return '-'
-
-def nowWeather(id):
-    try:
-        url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-        req = requests.get(url, headers=custom_header).text
-        document = json.loads(req)
-        others = document['others']
-        nowWeather = int(others['iconCode'])
-        return nowWeather
-    except:
-        return '-'
-
-def today_weather(id):
-    try:
-        url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-        req = requests.get(url, headers=custom_header).text
-        document = json.loads(req)
-        others = document['others']
-        weather_info = document['hr3List']
-        tw = dict()
-        tw['wcond'] = weather_info[0]['wcond'] # 날씨 코드
-        tw['temp'] = weather_info[0]['temp'] # 기온
-        tw['humi'] = weather_info[0]['humi'] # 습도
-        tw['wspd'] = weather_info[0]['wspd'] # 풍속
-        tw['rainp'] = weather_info[0]['rainp'] # 강우 확률
-        return tw
-    except:
-        return ''
-
-def tommorow_weather(id):
-    try:
-        url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-        req = requests.get(url, headers=custom_header).text
-        document = json.loads(req)
-        others = document['others']
-        weather_info = document['hr3List']
-        tommorow_weather = dict()
-        tommorow_weather['wcond'] = weather_info[-14]['wcond']
-        tommorow_weather['temp'] = weather_info[-14]['temp']
-        tommorow_weather['humi'] = weather_info[-14]['humi']
-        tommorow_weather['wspd'] = weather_info[-14]['wspd']
-        tommorow_weather['rainp'] = weather_info[-14]['rainp']
-        return tommorow_weather
-    except:
-        return ''
-
-def after_tommorow_weather(id):
-    try:
-        url = f'http://mtweather.nifos.go.kr/famous/mountainOne?stnId={id}'
-        req = requests.get(url, headers=custom_header).text
-        document = json.loads(req)
-        others = document['others']
-        weather_info = document['hr3List']
-        after_tommorow_weather = dict()
-        after_tommorow_weather['wcond'] = weather_info[-6]['wcond']
-        after_tommorow_weather['temp'] = weather_info[-6]['temp']
-        after_tommorow_weather['humi'] = weather_info[-6]['humi']
-        after_tommorow_weather['wspd'] = weather_info[-6]['wspd']
-        after_tommorow_weather['rainp'] = weather_info[-6]['rainp']
-        return after_tommorow_weather
-    except:
-        return ''
-
-
-def details(request, id):
-    weather_detail = {
-        'df': df(id)
-    }
-    return render(request, 'mt_map_zoom_2.html', {'weather_detail': weather_detail})
 
 
 
@@ -196,22 +66,7 @@ def detail(request, id):
         mountain1 = Mountain1.objects.get(id=id)
         mountain2 = Mountain2.objects.get(id=id)
         mountain3 = Mountain3.objects.get(id=id)
-
-        vo = dict()
-        dto = Mountain1.objects.get(id=id)
-        vo['dto'] = dto
-        sun_stuffs = {
-            'nowWeather': nowWeather(id),
-            'nowTemp': nowTemp(id),
-            'sunriseTime': sunriseTime(id),
-            'sunsetTime': sunsetTime(id),
-            'tw': today_weather(id),
-            'tommorow_weather': tommorow_weather(id),
-            'after_tommorow_weather': after_tommorow_weather(id)
-        }
-        vo['sun_stuffs'] = sun_stuffs
-
-        return render(request, 'detail.html', {'mountain1':mountain1, 'mountain2': mountain2, 'mountain3': mountain3, 'vo':vo, 'id':id})
+        return render(request, 'detail.html', {'mountain1':mountain1, 'mountain2': mountain2, 'mountain3': mountain3, 'id':id})
 
     else:
         mt_name = request.POST['mt_name']
@@ -220,22 +75,7 @@ def detail(request, id):
             id = mountain1.id
             mountain2 = Mountain2.objects.get(id=id)
             mountain3 = Mountain3.objects.get(id=id)
-
-            vo = dict()
-            dto = Mountain1.objects.get(id=id)
-            vo['dto'] = dto
-            sun_stuffs = {
-                'nowWeather': nowWeather(id),
-                'nowTemp': nowTemp(id),
-                'sunriseTime': sunriseTime(id),
-                'sunsetTime': sunsetTime(id),
-                'tw': today_weather(id),
-                'tommorow_weather': tommorow_weather(id),
-                'after_tommorow_weather': after_tommorow_weather(id)
-            }
-            vo['sun_stuffs'] = sun_stuffs
-
-            return render(request, 'detail.html', {'mountain1': mountain1, 'mountain2': mountain2, 'mountain3': mountain3, 'vo': vo, 'id':id})
+            return render(request, 'detail.html', {'mountain1': mountain1, 'mountain2': mountain2, 'mountain3': mountain3, 'id':id})
         except:
             messagebox.showinfo('Error', '해당 산이 목록에 없습니다')
             return redirect('/list/')

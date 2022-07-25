@@ -11297,3 +11297,7 @@ textarea.form-control-lg {
     width: 30px;
     height: 30px;
 }
+
+.error {
+  display: none;
+}

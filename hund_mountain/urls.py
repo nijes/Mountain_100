@@ -20,9 +20,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('zoom_1/<int:areacode>', views.zoom_1),
-    path('zoom_2/', views.zoom_2),
-    path('zoom_2/nifos/<int:id>', views.nifos),
+    path('map/<int:areacode>', views.map),
+    path('nifos/<int:id>', views.nifos),
     path('list/', views.list, name='list'),
     path('detail/<int:id>', views.detail, name='detail'),
     path('detail/p_transit/<int:id>', views.transit),
