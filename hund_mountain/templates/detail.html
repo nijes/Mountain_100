@@ -278,7 +278,7 @@
             url: "/nifos/{{ id }}",
             dataType: 'json',
             success: function(msg){
-                $('#card_text_main').children().css('display', 'block-inline');
+                $('#card_text_main').children().css('visibility', 'visible');
                 $('#error').children().css('display', 'none');
 
                 let nowWeather = msg.nowWeather
@@ -311,7 +311,7 @@
             },
             error: function(){
                 $('#nowWeather_img, #nowWeather_img_2, #tommorow_weather_img, #after_tommorow_weather_img').attr('src', `../static/assets/img/weather/icon/-.png`);
-                $('#card_text_main').children().css('display', 'none');
+                $('#card_text_main').children().css('visibility', 'hidden');
                 $('#error').children().css('display', 'block');
                 $('#tw_temp, #tm_temp, #atm_temp, #tw_humi, #tm_humi, #atm_humi, #tw_humi, #tm_humi, #atm_humi, #tw_wspd, #tm_wspd, #atm_wspd, #tw_rainp, #tm_rainp, #atm_rainp').text('');
             }

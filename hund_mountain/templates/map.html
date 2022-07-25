@@ -96,10 +96,10 @@
                 </div>
             </div>
 
-            <p class="card-text text-center" id="card_text_main">
-                <img src="../static/assets/img/weather/icon/temperature.png" class="weather-icon"><span id="nowTemp"></span><br>
-                <img src="../static/assets/img/weather/icon/sunrise_color.png" class="weather-icon"><span id="sunrise"></span><br>
-                <img src="../static/assets/img/weather/icon/sunset_color.png" class="weather-icon"><span id="sunset"></span><br>
+            <p class="card-text text-center working" id="card_text_main">
+                <img src="../static/assets/img/weather/icon/temperature.png" class="weather-icon" style="width:30px; height:30px;"><span id="nowTemp"></span><br>
+                <img src="../static/assets/img/weather/icon/sunrise_color.png" class="weather-icon working" style="width:30px; height:30px;"><span id="sunrise"></span><br>
+                <img src="../static/assets/img/weather/icon/sunset_color.png" class="weather-icon working" style="width:30px; height:30px;"><span id="sunset"></span><br>
             </p>
 
             <div>
@@ -220,8 +220,9 @@
                 url: "/nifos/{{ mt.id }}",
                 dataType: 'json',
                 success: function(msg){
-                    $('#card_text_main').children().css('display', 'block-inline');
+
                     $('#error').children().css('display', 'none');
+                    $('#card_text_main').children().css('visibility', 'visible');
 
                     let nowWeather = msg.nowWeather
                     let nowTemp = msg.nowTemp
@@ -253,7 +254,7 @@
                 },
                 error: function(){
                     $('#nowWeather_img, #nowWeather_img_2, #tommorow_weather_img, #after_tommorow_weather_img').attr('src', `../static/assets/img/weather/icon/-.png`);
-                    $('#card_text_main').children().css('display', 'none');
+                    $('#card_text_main').css('visibility', 'hidden');
                     $('#error').children().css('display', 'block');
                     $('#tw_temp, #tm_temp, #atm_temp, #tw_humi, #tm_humi, #atm_humi, #tw_humi, #tm_humi, #atm_humi, #tw_wspd, #tm_wspd, #atm_wspd, #tw_rainp, #tm_rainp, #atm_rainp').text('');
                 }
